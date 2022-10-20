@@ -46,18 +46,24 @@ norm_val_X = np.array(norm(val))
 def build_model():
     # Define model layers.
     input_layer = Input(shape=(len(train .columns),))
-    inter_layer= Dense(units='64',activation='relu')(input_layer)
-    first_dense = Dense(units='128', activation='relu')(inter_layer)
-    y1_output = Dense(units='1', name='left')(first_dense)
+    inter_layer= Dense(units='64',name='inter_layer',activation='tanh')(input_layer)
+    first_dense = Dense(units='128',name='first_dense' ,activation='tanh')(inter_layer)
 
-    second_dense = Dense(units='128', activation='relu')(first_dense)
-    y2_output = Dense(units='1', name='right')(second_dense)
+    for_all = Dense(units='128',name='for_all', activation='tanh')(first_dense)
+    one_64=Dense(units='64',name='1',activation='tanh')(for_all)
+    y1_output = Dense(units='1', name='left')(one_64)
 
-    third_dense = Dense(units='128', activation='relu')(first_dense)
-    y3_output = Dense(units='1', name='up')(third_dense)
+    second_dense = Dense(units='128',name='second_dense', activation='tanh')(first_dense)
+    two_64=Dense(units='64',name='2',activation='tanh')(second_dense)
+    y2_output = Dense(units='1', name='right')(two_64)
 
-    four_dense = Dense(units='128', activation='relu')(first_dense)
-    y4_output = Dense(units='1', name='down')(four_dense)
+    third_dense = Dense(units='128',name='third_dense', activation='tanh')(first_dense)
+    three_64=Dense(units='64',name='3',activation='tanh')(third_dense)
+    y3_output = Dense(units='1', name='up')(three_64)
+
+    four_dense = Dense(units='128',name='four_dense' ,activation='tanh')(first_dense)
+    four_64=Dense(units='64',name='4',activation='tanh')(four_dense)
+    y4_output = Dense(units='1', name='down')(four_64)
 
     # Define the model with the input layer and a list of output layers
     model = Model(inputs=input_layer, outputs=[y1_output, y2_output, y3_output, y4_output])
